@@ -1,0 +1,9 @@
+node_modules/
+.env
+data/*.db
+data/*.db-*
+data/uploads/
+data/contracts/
+demo/
+*.log
+.DS_Store
