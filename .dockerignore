@@ -1,0 +1,16 @@
+node_modules
+.git
+.gitignore
+.env
+data/*.db*
+data/uploads
+data/contracts
+demo
+*.log
+README.md
+DEV-JOURNAL.md
+SPEC.md
+Dockerfile
+.dockerignore
+render.yaml
+.env.example
