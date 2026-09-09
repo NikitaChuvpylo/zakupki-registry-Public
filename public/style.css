@@ -1,0 +1,103 @@
+/* Реестр малых закупок — тёмная тема */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background: #0f1115;
+  color: #e5e7eb;
+}
+header {
+  background: #14532d;
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+header h1 { margin: 0; font-size: 20px; font-weight: 600; }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+main { padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
+
+.btn {
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: #e5e7eb;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-block;
+}
+.btn:hover { background: #374151; }
+.btn-primary { background: #166534; border-color: #166534; color: #fff; }
+.btn-primary:hover { background: #15803d; }
+.btn-success { background: #0e7490; border-color: #0e7490; color: #fff; }
+.btn-success:hover { background: #0891b2; }
+.btn-danger { background: #b91c1c; border-color: #b91c1c; color: #fff; }
+.btn-danger:hover { background: #dc2626; }
+.btn-ghost { border-color: transparent; color: #4ade80; background: transparent; }
+.btn:disabled { opacity: .5; cursor: default; }
+
+.status { font-size: 13px; color: #4ade80; margin: 8px 0; }
+.hint { color: #9ca3af; font-size: 13px; }
+.hidden { display: none !important; }
+
+.toolbar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.toolbar input[type=search] {
+  flex: 1; min-width: 240px; padding: 8px 12px; border: 1px solid #374151; border-radius: 6px;
+  font-size: 14px; background: #111827; color: #e5e7eb;
+}
+.toolbar select, select#f-vat, select#f-status {
+  padding: 8px 10px; border: 1px solid #374151; border-radius: 6px; font-size: 14px;
+  background: #111827; color: #e5e7eb;
+}
+
+table { border-collapse: collapse; background: #111827; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.5); }
+th, td { padding: 9px 10px; border-bottom: 1px solid #1f2937; font-size: 14px; text-align: left; vertical-align: top; }
+th { background: #1a2332; font-weight: 600; font-size: 13px; white-space: nowrap; color: #9ca3af; }
+tr:hover td { background: #1a2332; }
+td .row-link { color: #4ade80; text-decoration: none; font-weight: 600; }
+td .row-link:hover { text-decoration: underline; }
+.badge { padding: 2px 10px; border-radius: 999px; font-size: 12px; }
+.badge-active { background: #14532d; color: #86efac; }
+.badge-done { background: #374151; color: #d1d5db; }
+.badge-terminated { background: #7f1d1d; color: #fca5a5; }
+
+.card-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+.card-top h2 { margin: 0; flex: 1; font-size: 18px; }
+.card-actions { display: flex; gap: 8px; }
+
+.card-layout { display: grid; grid-template-columns: minmax(360px, 480px) 1fr; gap: 20px; align-items: start; }
+@media (max-width: 1000px) { .card-layout { grid-template-columns: 1fr; } }
+
+.card-fields {
+  background: #111827; padding: 16px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.5);
+  display: grid; gap: 10px;
+}
+.card-fields h3, .card-pdf h3 { margin: 0 0 6px; font-size: 15px; }
+.card-fields label { display: flex; flex-direction: column; gap: 3px; font-size: 13px; color: #9ca3af; }
+.card-fields input, .card-fields select {
+  padding: 7px 10px; border: 1px solid #374151; border-radius: 6px; font-size: 14px;
+  background: #0b1220; color: #e5e7eb;
+}
+.row2 { display: grid; grid-template-columns: 1fr 120px; gap: 10px; }
+
+.pdf-pages { display: flex; flex-direction: column; gap: 10px; max-height: 70vh; overflow-y: auto; }
+.pdf-pages img {
+  width: 100%; max-width: 520px; border: 1px solid #374151; border-radius: 6px; background: #fff; cursor: zoom-in;
+}
+.pdf-pages img.zoomed { transform: scale(1.6); transform-origin: top left; }
+
+.table-wrap { overflow-x: auto; background: #111827; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.5); }
+#items-table td input {
+  width: 100%; min-width: 60px; border: 1px solid transparent; padding: 4px 6px; border-radius: 4px; font-size: 13px;
+  background: transparent; color: #e5e7eb;
+}
+#items-table td input:focus { border-color: #0e7490; background: #0b1220; outline: none; }
+#items-table td input.auto { color: #22d3ee; font-weight: 600; }
+#items-table .num-col { width: 44px; }
+#items-table .name-col input { min-width: 220px; }
+.items-actions { margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+#items-total td { font-weight: 700; color: #4ade80; background: #1a2332; border-top: 2px solid #374151; }

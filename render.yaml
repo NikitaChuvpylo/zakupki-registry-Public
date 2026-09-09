@@ -1,0 +1,14 @@
+# Render blueprint — бесплатный веб-сервис
+services:
+  - type: web
+    name: zakupki-registry
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MAX_PDF_MB
+        value: 30
