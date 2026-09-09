@@ -12,3 +12,5 @@ services:
         value: production
       - key: MAX_PDF_MB
         value: 30
+      - key: NODE_VERSION
+        value: 22.9.0
