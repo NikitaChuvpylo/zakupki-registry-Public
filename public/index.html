@@ -10,8 +10,9 @@
   <header>
     <h1>Реестр малых закупок</h1>
     <div class="header-actions">
-      <label class="btn btn-primary" for="pdf-upload">+ Загрузить PDF</label>
-      <input type="file" id="pdf-upload" accept="application/pdf,.pdf" hidden>
+      <label class="btn btn-primary" for="pdf-upload">+ Загрузить PDF или фото</label>
+      <input type="file" id="pdf-upload" accept="application/pdf,.pdf,image/jpeg,image/png,image/webp" multiple hidden>
+      <button id="btn-fetch-mail" class="btn btn-ghost" title="Проверить почту на новые контракты">📧 Забрать письма</button>
       <span id="upload-status" class="status"></span>
     </div>
   </header>
@@ -145,7 +146,6 @@
       </div>
       <div class="items-actions">
         <button id="btn-add-item" class="btn">+ Добавить позицию</button>
-        <button id="btn-fill-demo" class="btn btn-ghost">Заполнить из контракта №7 (демо)</button>
       </div>
     </section>
   </main>

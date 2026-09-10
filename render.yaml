@@ -1,14 +1,16 @@
-# Порт сервера (Render/Railway сами задают через переменную PORT)
-PORT=3001
-
-# Ограничение размера загружаемого PDF (МБ)
-MAX_PDF_MB=30
-
-# --- Забор контрактов из почты (необязательно) ---
-# Для Mail.ru: Настройки почты -> Пароль для внешних приложений -> создать новый,
-# использовать его ниже (НЕ обычный пароль от почты).
-# MAIL_IMAP_HOST=imap.mail.ru
-# MAIL_USER=your@mail.ru
-# MAIL_APP_PASSWORD=xxxxxxxxxxxxxxxx
-# MAIL_FOLDER=INBOX
-# MAIL_LOOKBACK_DAYS=60
+# Render blueprint — бесплатный веб-сервис
+services:
+  - type: web
+    name: zakupki-registry
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MAX_PDF_MB
+        value: 30
+      - key: NODE_VERSION
+        value: 22.9.0

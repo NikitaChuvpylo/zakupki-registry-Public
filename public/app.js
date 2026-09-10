@@ -278,15 +278,43 @@ document.querySelector('#contracts-table tbody').addEventListener('click', (e) =
   if (a) { e.preventDefault(); openCard(Number(a.dataset.id)); }
 });
 
-$('pdf-upload').addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+$('btn-fetch-mail').addEventListener('click', async () => {
   const status = $('upload-status');
-  status.textContent = 'Загружаю и распознаю страницы…';
+  status.textContent = 'Проверяю почту…';
+  status.style.color = '#b45309';
+  try {
+    const res = await fetch('/api/mail/fetch', { method: 'POST' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Ошибка');
+    if (data.imported && data.imported.length) {
+      status.textContent = `Новых контрактов: ${data.imported.length} (проверено писем: ${data.checked})`;
+      status.style.color = '#166534';
+    } else {
+      status.textContent = `Новых контрактов нет (проверено писем: ${data.checked})`;
+      status.style.color = '#374151';
+    }
+    if (data.errors && data.errors.length) {
+      console.warn('Ошибки при разборе некоторых писем:', data.errors);
+    }
+    await loadList();
+  } catch (err) {
+    status.textContent = 'Ошибка почты: ' + err.message;
+    status.style.color = '#b91c1c';
+  }
+});
+
+$('pdf-upload').addEventListener('change', async (e) => {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+  const status = $('upload-status');
+  const isPhotos = files.length > 1 || !/\.pdf$/i.test(files[0].name);
+  status.textContent = isPhotos
+    ? `Загружаю ${files.length} фото и распознаю…`
+    : 'Загружаю и распознаю страницы…';
   status.style.color = '#b45309';
   try {
     const fd = new FormData();
-    fd.append('pdf', file);
+    files.forEach(f => fd.append('files', f));
     const res = await fetch('/api/upload', { method: 'POST', body: fd });
     if (!res.ok) throw new Error((await res.json()).error || 'Ошибка');
     const data = await res.json();
@@ -295,8 +323,9 @@ $('pdf-upload').addEventListener('change', async (e) => {
     e.target.value = '';
     await loadList();
     await openCard(data.contract.id);
-    $('card-title').textContent = file.name.replace(/\.pdf$/i, '');
-    $('f-num').value = file.name.replace(/\.pdf$/i, '');
+    const title = files[0].name.replace(/\.(pdf|jpe?g|png|webp)$/i, '');
+    $('card-title').textContent = title;
+    $('f-num').value = title;
     // автоматически распознать спецификацию
     startRecognize(data.contract.id, true);
   } catch (err) {
@@ -354,23 +383,6 @@ $('btn-add-item').addEventListener('click', () => {
   current.items.push({ num: current.items.length + 1, name: '', unit: 'шт', qty: 1, price: '' });
   renderItems();
   dirty = true;
-});
-
-$('btn-fill-demo').addEventListener('click', () => {
-  if (!confirm('Заменить позиции данными контракта №7 (молоко) для проверки?')) return;
-  const demoItems = [
-    { num: 1, name: 'Молоко питьевое пастеризованное, м.д.ж. 2,5%', unit: 'л', qty: 362, price: 77.5, okpd2: '10.51.11.111', gost: 'ГОСТ 31450-2013', chars: 'Вид молока: коровье; Массовая доля жира 2,5%; Без консервантов; Страна происхождения: Россия' },
-    { num: 2, name: 'Напиток кисломолочный йогуртный, м.д.ж. 2,5%', unit: 'кг', qty: 84, price: 122, okpd2: '10.51.52.112', gost: 'ТР ТС 021/2011', chars: 'Массовая доля жира 2,5%; Страна происхождения: Россия' },
-    { num: 3, name: 'Напиток кисломолочный', unit: 'кг', qty: 84, price: 115, okpd2: '10.51.52.112', gost: 'ТР ТС 021/2011', chars: 'Страна происхождения: Россия' },
-    { num: 4, name: 'Молоко сгущенное, м.д.ж. 8,5%', unit: 'кг', qty: 12.24, price: 305, okpd2: '10.51.52.190', gost: 'ГОСТ 31688-2012', chars: 'Вид продукта: молоко сгущенное с сахаром; Массовая доля жира: 8,5%; Упаковка: металлическая банка; Страна происхождения: Россия' },
-    { num: 5, name: 'Сметана, м.д.ж. 15%', unit: 'кг', qty: 23.4, price: 280, okpd2: '10.51.51.113', gost: 'ГОСТ 31452-2012', chars: 'Массовая доля жира 15%; Изготовлена из сливок коровьего молока; Упаковка: пластиковый стакан; Страна происхождения: Россия' },
-    { num: 6, name: 'Творог, м.д.ж. 9%', unit: 'кг', qty: 95, price: 340, okpd2: '10.51.52.211', gost: 'ГОСТ 31453-2013', chars: 'Массовая доля жира 9%; Изготовлен из сырого коровьего молока; Страна происхождения: Россия' },
-    { num: 7, name: 'Масло сливочное «Крестьянское», м.д.ж. 72,5%', unit: 'кг', qty: 710, price: 50, okpd2: '10.51.40.313', gost: 'ГОСТ 32261-2013', chars: 'Страна происхождения: Россия' },
-  ];
-  current.items = demoItems;
-  renderItems();
-  dirty = true;
-  setStatus('Демо-позиции загружены. Проверьте и нажмите «Сохранить» или «Скачать для ЕИС»');
 });
 
 window.addEventListener('beforeunload', (e) => {
